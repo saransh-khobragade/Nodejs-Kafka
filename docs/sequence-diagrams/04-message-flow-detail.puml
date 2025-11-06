@@ -1,0 +1,34 @@
+@startuml
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 20
+skinparam maxmessagesize 60
+
+title Message Flow Detail
+
+participant Producer
+participant Kafka
+participant Topic
+participant Partition
+participant Consumer
+
+Producer -> Kafka: Produce(message, topic="demo-topic")
+Kafka -> Topic: Route to Topic
+Topic -> Partition: Assign to Partition
+Partition -> Partition: Append Message
+Partition --> Kafka: Acknowledge (offset)
+Kafka --> Producer: Success (offset)
+
+note right of Consumer: Consumer polls for messages
+Consumer -> Kafka: Fetch from topic (from last offset)
+Kafka -> Topic: Get messages
+Topic -> Partition: Read from Partition
+Partition --> Topic: Return messages
+Topic --> Kafka: Messages with offsets
+Kafka --> Consumer: Deliver messages
+
+Consumer -> Consumer: Process eachMessage()
+Consumer -> Kafka: Commit offset
+Kafka -> Partition: Update consumer offset
+
+@enduml
+

@@ -1,0 +1,26 @@
+{
+  "name": "kafka-demo-nodejs",
+  "version": "1.0.0",
+  "description": "A Kafka demo project using Node.js",
+  "main": "index.js",
+  "scripts": {
+    "start:producer": "node producer.js",
+    "start:consumer": "node consumer.js",
+    "dev:producer": "node --watch producer.js",
+    "dev:consumer": "node --watch consumer.js"
+  },
+  "keywords": [
+    "kafka",
+    "nodejs",
+    "demo"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
+

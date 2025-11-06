@@ -1,0 +1,31 @@
+@startuml
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 20
+skinparam maxmessagesize 60
+
+title Producer Flow
+
+participant Producer
+participant KafkaClient
+participant KafkaBroker
+participant Topic
+
+Producer -> KafkaClient: Create Producer Instance
+Producer -> KafkaClient: Connect to Broker
+KafkaClient -> KafkaBroker: Establish Connection
+KafkaBroker --> KafkaClient: Connection Acknowledged
+
+loop For each message
+    Producer -> KafkaClient: Send Message
+    KafkaClient -> KafkaBroker: Produce Message to Topic
+    KafkaBroker -> Topic: Store Message
+    Topic --> KafkaBroker: Acknowledge
+    KafkaBroker --> KafkaClient: Send Success
+    KafkaClient --> Producer: Message Sent
+end
+
+Producer -> KafkaClient: Disconnect
+KafkaClient -> KafkaBroker: Close Connection
+
+@enduml
+

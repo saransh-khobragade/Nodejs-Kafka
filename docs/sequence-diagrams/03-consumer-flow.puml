@@ -1,0 +1,42 @@
+@startuml
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 20
+skinparam maxmessagesize 60
+
+title Consumer Flow
+
+participant Consumer
+participant KafkaClient
+participant KafkaBroker
+participant Topic
+participant ConsumerGroup
+
+Consumer -> KafkaClient: Create Consumer Instance
+Consumer -> KafkaClient: Set Consumer Group
+Consumer -> KafkaClient: Connect to Broker
+KafkaClient -> KafkaBroker: Establish Connection
+KafkaBroker --> KafkaClient: Connection Acknowledged
+
+Consumer -> KafkaClient: Subscribe to Topic
+KafkaClient -> KafkaBroker: Register Consumer Group
+KafkaBroker -> ConsumerGroup: Add Consumer
+ConsumerGroup --> KafkaBroker: Acknowledged
+
+loop Poll for messages
+    Consumer -> KafkaClient: Poll for Messages
+    KafkaClient -> KafkaBroker: Fetch Messages
+    KafkaBroker -> Topic: Read Messages
+    Topic --> KafkaBroker: Return Messages
+    KafkaBroker --> KafkaClient: Deliver Messages
+    KafkaClient --> Consumer: Process Messages
+    
+    Consumer -> Consumer: Display Message
+    Consumer -> KafkaClient: Commit Offset
+    KafkaClient -> KafkaBroker: Update Offset
+end
+
+Consumer -> KafkaClient: Disconnect
+KafkaClient -> KafkaBroker: Leave Consumer Group
+
+@enduml
+

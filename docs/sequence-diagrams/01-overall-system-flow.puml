@@ -1,0 +1,32 @@
+@startuml
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 20
+skinparam maxmessagesize 60
+
+title Overall System Flow
+
+participant Docker
+participant Zookeeper
+participant Kafka
+participant Producer
+participant Consumer
+
+Docker -> Zookeeper: Start Container
+Docker -> Kafka: Start Container
+Kafka -> Zookeeper: Connect & Register
+
+Producer -> Kafka: Connect to Broker
+Consumer -> Kafka: Connect to Broker
+
+Producer -> Kafka: Send Message 1
+Producer -> Kafka: Send Message 2
+Producer -> Kafka: Send Message 3
+
+Kafka -> Consumer: Deliver Message 1
+Kafka -> Consumer: Deliver Message 2
+Kafka -> Consumer: Deliver Message 3
+
+Consumer -> Consumer: Process & Display
+
+@enduml
+
