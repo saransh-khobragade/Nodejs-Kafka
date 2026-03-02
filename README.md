@@ -10,6 +10,7 @@ A simple Kafka demonstration project using Node.js and KafkaJS, with Docker Comp
 
 ## Setup
 
+
 1. **Install dependencies:**
    ```bash
    npm install
